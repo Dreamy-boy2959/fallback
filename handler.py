@@ -1,22 +1,46 @@
-# Sử dụng base image Python (chọn phiên bản phù hợp với code của bạn, ví dụ 3.10 hoặc 3.11)
-FROM python:3.10-slim
+import runpod
 
-# Thiết lập thư mục làm việc trong container
-WORKDIR /app
+from OpenAiServer.src.ai_search.faiss_singleton import FaissSingleton
+from OpenAiServer.src.video_to_id import videoToId
 
-# Cài đặt các gói hệ thống cần thiết (nếu có, ví dụ git, build-essential)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
 
-# Copy file requirements trước để tận dụng Docker layer caching
-COPY requirements.txt .
+instance = FaissSingleton().get_instance()
 
-# Cài đặt các thư viện Python (runpod, faiss, numpy, v.v.)
-RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy toàn bộ source code của bạn (trong đó có handler.py và thư mục OpenAiServer) lên container
-COPY . .
+def handler(job):
+    inputs = job["input"]
 
-# Lệnh khởi chạy serverless handler của RunPod
-CMD ["python", "-u", "handler.py"]
+    search_type = inputs.get("searchType")
+    query = inputs.get("q")
+
+    if not search_type:
+        return {
+            "error": "Missing searchType"
+        }
+
+    if not query:
+        return {
+            "error": "Missing q"
+        }
+
+    # RunPod chỉ thực hiện tìm kiếm vector trên GPU
+    results = instance.search(search_type, query)
+
+    # Thay vì trả về URL trên server như trước, ta trả về file_name 
+    # để phía Laptop tự nhận diện và load ảnh từ ổ cứng local
+    results = [
+        {
+            "file_name": result,  # Tên file/đường dẫn gốc từ kết quả tìm kiếm vector
+            "id": videoToId[result.split("/")[1]] if "/" in result and len(result.split("/")) > 1 else None
+        }
+        for result in results
+    ]
+
+    return {
+        "result": results
+    }
+
+
+runpod.serverless.start({
+    "handler": handler
+})
