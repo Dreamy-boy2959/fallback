@@ -3,7 +3,7 @@ from flask_cors import CORS
 from ai_search.faiss_singleton import FaissSingleton
 import glob, os
 from pathlib import Path
-
+from video_to_id import videoToId
 
 
 app = Flask(__name__)
