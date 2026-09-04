@@ -8,7 +8,7 @@ RUNPOD_ENDPOINT_URL = "https://api.runpod.ai/v2/l1qe1g4du8a97b/runsync"  # Thay 
 RUNPOD_API_KEY = "YOUR_RUNPOD_API_KEY"                                     # Thay API Key của bạn
 
 # Thư mục chứa ảnh gốc trên laptop (Ví dụ: thư mục 'images' nằm cùng cấp với app.py)
-LOCAL_IMAGE_DIR = "./images" 
+LOCAL_IMAGE_DIR = "./Keyframe" 
 
 st.title("🔍 Local Video/Image Search (GPU RunPod)")
 st.write("Hệ thống tính toán vector trên RunPod, hiển thị ảnh trực tiếp từ ổ cứng laptop.")
