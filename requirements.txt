@@ -2,4 +2,7 @@ runpod
 flask
 flask-cors
 faiss-cpu
+faiss-gpu
 open_clip_torch
+numpy
+pillow
