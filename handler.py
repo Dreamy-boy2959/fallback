@@ -26,12 +26,12 @@ def handler(job):
     # RunPod chỉ thực hiện tìm kiếm vector trên GPU
     results = instance.search(search_type, query)
 
-    # Thay vì trả về URL trên server, ta trả về tên file/đường dẫn thô (raw result)
-    # để laptop tự map với thư mục local của nó
+    # Thay vì trả về URL trên server như trước, ta trả về file_name 
+    # để phía Laptop tự nhận diện và load ảnh từ ổ cứng local
     results = [
         {
-            "file_name": result,  # Tên file/đường dẫn gốc từ vector DB
-            "id": videoToId[result.split("/")[1]] if "/" in result else None
+            "file_name": result,  # Tên file/đường dẫn gốc từ kết quả tìm kiếm vector
+            "id": videoToId[result.split("/")[1]] if "/" in result and len(result.split("/")) > 1 else None
         }
         for result in results
     ]
