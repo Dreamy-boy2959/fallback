@@ -1,0 +1,5 @@
+runpod
+flask
+flask-cors
+faiss-cpu
+open_clip_torch
