@@ -4,7 +4,7 @@ from PIL import Image
 import requests
 
 # --- CẤU HÌNH ---
-RUNPOD_ENDPOINT_URL = "https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/runsync"  # Thay URL RunPod của bạn
+RUNPOD_ENDPOINT_URL = "https://api.runpod.ai/v2/l1qe1g4du8a97b/runsync"  # Thay URL RunPod của bạn
 RUNPOD_API_KEY = "YOUR_RUNPOD_API_KEY"                                     # Thay API Key của bạn
 
 # Thư mục chứa ảnh gốc trên laptop (Ví dụ: thư mục 'images' nằm cùng cấp với app.py)
